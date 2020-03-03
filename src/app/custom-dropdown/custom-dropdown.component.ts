@@ -1,5 +1,12 @@
-import { Component, OnInit, Input, SimpleChanges, OnChanges } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  Component,
+  OnInit,
+  Input,
+  SimpleChanges,
+  OnChanges,
+  forwardRef
+} from "@angular/core";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 import * as _ from "lodash";
 
@@ -8,14 +15,15 @@ import * as _ from "lodash";
   templateUrl: "./custom-dropdown.component.html",
   styleUrls: ["./custom-dropdown.component.scss"],
   providers: [
-     {
-        provide: NG_VALUE_ACCESSOR,
-        useExisting: forwardRef(() => AppInputComponent),
-        multi: true
-     }
-   ]
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => CustomDropdownComponent),
+      multi: true
+    }
+  ]
 })
-export class CustomDropdownComponent implements OnInit, OnChanges, ControlValueAccessor {
+export class CustomDropdownComponent
+  implements OnInit, OnChanges, ControlValueAccessor {
   dropdown: boolean = false;
 
   private _value;
@@ -28,13 +36,13 @@ export class CustomDropdownComponent implements OnInit, OnChanges, ControlValueA
     this._value = v;
     this.onChange(this._value);
     this.onTouched();
+    console.log(this._value);
   }
-
-
+  onChange: any = () => {};
+  onTouched: any = () => {};
 
   flatSource = [];
   groupSource = [];
-
 
   @Input() source: any;
   @Input() displayField: string;
@@ -42,12 +50,22 @@ export class CustomDropdownComponent implements OnInit, OnChanges, ControlValueA
   @Input() disableFilter: boolean = false;
   @Input() groupBy: string;
   @Input() sortBy: string;
-  @Input() selection: any;
+  // @Input() selection: any;
 
   filter = "";
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() { }
+  ngOnInit() {}
+
+  writeValue(value: any): void {
+    this.value = value;
+  }
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.source) {
@@ -84,16 +102,15 @@ export class CustomDropdownComponent implements OnInit, OnChanges, ControlValueA
     if (this.groupBy) {
       this.setGroupSource(results);
     }
-
   }
 
   select(item) {
-    this.selection = item;
+    this._value = item;
     this.dropdown = !this.dropdown;
   }
   getFieldTitle() {
-    return this.selection
-      ? this.getItemDisplayField(this.selection)
+    return this._value
+      ? this.getItemDisplayField(this.value)
       : this.placeholder;
   }
 
@@ -113,6 +130,4 @@ export class CustomDropdownComponent implements OnInit, OnChanges, ControlValueA
       });
     }
   }
-
 }
-
