@@ -78,8 +78,7 @@ export class CustomDropdownComponent
       this.setGroupSource(this.flatSource);
     }
   }
-  onFilterChange(event) {
-    debugger;
+  onFilterChange() {
     let items = this.flatSource;
     if (this.filter.length === 0) {
       return this.groupBy ? this.groupSource : items;
@@ -105,7 +104,7 @@ export class CustomDropdownComponent
   }
 
   select(item) {
-    this._value = item;
+    this.value = item;
     this.dropdown = !this.dropdown;
   }
   getFieldTitle() {

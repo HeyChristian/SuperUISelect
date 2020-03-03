@@ -20,10 +20,10 @@ export class AppComponent  {
       make: 'toyota'
     },
   ];
-
-   selection = {
-      name: '5678',
-      make: 'hyundai'
-    };
+  selection : any;
+  //  selection = {
+  //     name: '5678',
+  //     make: 'hyundai'
+  //   };
   
 }

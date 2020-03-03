@@ -1,7 +1,7 @@
 <div class="dropdown-container">
   <div class="dropdown-toggle" (click)="onDropdownClick()">{{ getFieldTitle() }}</div>
   <div *ngIf="dropdown" class="dropdown">
-    <input placeholder="Filter..." class="dropdown-input" [(ngModel)]="filter" (change)="onFilterChange($event)" *ngIf="!disableFilter"/>
+    <input placeholder="Filter..." class="dropdown-input" [(ngModel)]="filter" (change)="onFilterChange()" *ngIf="!disableFilter"/>
     <div *ngIf="!groupBy; else groupContent">
        <ng-container *ngFor="let i of flatSource"> 
         <div class="item" (click)="select(i)">{{getItemDisplayField(i)}}</div>
