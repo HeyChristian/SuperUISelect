@@ -36,26 +36,24 @@ export class CustomDropdownComponent
     this._value = v;
     this.onChange(this._value);
     this.onTouched();
-    console.log(this._value);
   }
-  onChange: any = () => {};
-  onTouched: any = () => {};
+  onChange: any = () => { };
+  onTouched: any = () => { };
 
-  flatSource = [];
-  groupSource = [];
+  private flatSource = [];
+  private groupSource = [];
 
   @Input() source: any;
   @Input() displayField: string;
-  @Input() placeholder: string = "Select One";
+  @Input() placeholder: string = 'Select One';
   @Input() disableFilter: boolean = false;
   @Input() groupBy: string;
   @Input() sortBy: string;
-  // @Input() selection: any;
 
-  filter = "";
-  constructor() {}
+  filter = '';
+  constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   writeValue(value: any): void {
     this.value = value;
@@ -68,38 +66,48 @@ export class CustomDropdownComponent
   }
 
   ngOnChanges(changes: SimpleChanges) {
+
+    if (changes.sortBy) {
+      this.source = _.sortBy(this.source, this.sortBy);
+    }
     if (changes.source) {
       this.flatSource = this.source;
-    }
-    if (changes.sortBy) {
-      this.flatSource = _.sortBy(this.source, this.sortBy);
     }
     if (changes.groupBy && this.flatSource) {
       this.setGroupSource(this.flatSource);
     }
   }
   onFilterChange() {
-    let items = this.flatSource;
-    if (this.filter.length === 0) {
-      return this.groupBy ? this.groupSource : items;
-    }
+    //debugger;
 
-    let results = [];
-    for (let index = 0; index < items.length; index++) {
-      for (let key of Object.keys(items[index])) {
-        const item = items[index];
-        const field = item[key].toLowerCase();
-        if (
-          field.indexOf(this.filter.toLowerCase()) > -1 &&
-          results.filter(f => f === item).length === 0
-        ) {
-          results.push(item);
+    if (this.filter.length === 0) {
+      if (this.groupBy) {
+        this.setGroupSource(this.source);
+      } else {
+        this.flatSource = this.source;
+      }
+    } else {
+      console.log('filter is there');
+      let items = this.source;
+      let results = [];
+      for (let index = 0; index < items.length; index++) {
+
+        for (let key of Object.keys(items[index])) {
+          const item = items[index];
+          const field = item[key].toLowerCase();
+          const isExist = results.filter(f => f === item).length > 0;
+          const isMatch = field.indexOf(this.filter.toLowerCase()) !== -1;
+          if (isMatch && !isExist) {
+            results.push(item);
+            console.log(results);
+          }
         }
       }
-    }
-    this.flatSource = results;
-    if (this.groupBy) {
-      this.setGroupSource(results);
+      if (this.groupBy) {
+        this.setGroupSource(results);
+      } else {
+        this.flatSource = results;
+      }
     }
   }
 
@@ -121,6 +129,7 @@ export class CustomDropdownComponent
   }
 
   setGroupSource(results) {
+    console.log('ongrouping');
     const groups = _.groupBy(results, this.groupBy);
     for (let key of Object.keys(groups)) {
       this.groupSource.push({
