@@ -1,0 +1,12 @@
+<custom-dropdown 
+[source]="items" 
+[placeholder]="'select order'"
+[displayField]="'name'" 
+[groupBy]="'make'"
+[sortBy]="'name'"
+[(selection)]="selection"
+[disableFilter]="false">
+</custom-dropdown>
+
+
+{{selection | json}}
