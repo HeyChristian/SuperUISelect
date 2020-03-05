@@ -43,12 +43,14 @@ export class CustomDropdownComponent
   private flatSource = [];
   private groupSource = [];
 
-  @Input() source: any;
-  @Input() displayField: string;
-  @Input() placeholder: string = 'Select One';
-  @Input() disableFilter: boolean = false;
-  @Input() groupBy: string;
-  @Input() sortBy: string;
+  @Input() source: any; //  source list
+  @Input() displayField: string; // field name to display
+  @Input() imageField: string; // field image to display
+  @Input() placeholder: string = 'Select One'; // drowndown placeholder
+  @Input() disableFilter: boolean = false; // flag for disable filter
+  @Input() groupBy: string; // field for grouping the source
+  @Input() sortBy: string; // field for sorting the source
+  @Input() minFilterLength: number = 1; // minimum characters for filter
 
   filter = '';
   constructor() { }
@@ -78,20 +80,16 @@ export class CustomDropdownComponent
     }
   }
   onFilterChange() {
-    //debugger;
-
-    if (this.filter.length === 0) {
+    if (this.filter.length < this.minFilterLength) {
       if (this.groupBy) {
         this.setGroupSource(this.source);
       } else {
         this.flatSource = this.source;
       }
     } else {
-      console.log('filter is there');
       let items = this.source;
       let results = [];
       for (let index = 0; index < items.length; index++) {
-
         for (let key of Object.keys(items[index])) {
           const item = items[index];
           const field = item[key].toLowerCase();
@@ -99,7 +97,6 @@ export class CustomDropdownComponent
           const isMatch = field.indexOf(this.filter.toLowerCase()) !== -1;
           if (isMatch && !isExist) {
             results.push(item);
-            console.log(results);
           }
         }
       }
@@ -129,7 +126,7 @@ export class CustomDropdownComponent
   }
 
   setGroupSource(results) {
-    console.log('ongrouping');
+    this.groupSource = [];
     const groups = _.groupBy(results, this.groupBy);
     for (let key of Object.keys(groups)) {
       this.groupSource.push({
