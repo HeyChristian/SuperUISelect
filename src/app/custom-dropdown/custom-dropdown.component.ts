@@ -53,6 +53,8 @@ export class CustomDropdownComponent
   @Input() sortBy: string; // field for sorting the source
   @Input() minFilterLength: number = 1; // minimum characters for filter
 
+  @Input() roundedImg: boolean = true; // image to display rounded
+
   // COLOUR SCHEME
   @Input() primaryColor: string = '#00507D'; // Primary Color
   @Input() itemHoverColor: string = '#F8F8F8'; // Highlight Color
@@ -134,6 +136,9 @@ export class CustomDropdownComponent
   }
   getItemDisplayField(item) {
     return item[this.displayField];
+  }
+  getItemImageField(item) {
+    return item[this.imageField];
   }
 
   setGroupSource(results) {

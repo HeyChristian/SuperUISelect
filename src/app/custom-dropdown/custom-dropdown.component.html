@@ -14,7 +14,7 @@
 	<input placeholder="Filter..." class="dropdown-input" [(ngModel)]="filter" (ngModelChange)="onFilterChange()" *ngIf="!disableFilter"/>
 	<div class="items-container">
 
-		<div class="no-results" *ngIf="flatSource.length === 0 || groupSource.length === 0">
+		<div class="no-results" *ngIf="flatSource.length === 0 || groupBy != null && groupSource.length === 0">
 
 			<svg version="1.1" viewBox="0 0 100 100">
 				<path
@@ -28,13 +28,18 @@
 
 		<div *ngIf="!groupBy; else groupContent">
 			<ng-container *ngFor="let i of flatSource">
-				<div class="item" (click)="select(i)">{{getItemDisplayField(i)}}</div>
+				<div class="item" (click)="select(i)">
+          <img draggable="false" *ngIf="imageField && i.image != null" class="image" [ngClass]="{'rounded': roundedImg}" [src]="getItemImageField(i)">
+          <span>{{getItemDisplayField(i)}}</span>
+        </div>
 			</ng-container>
 		</div>
 		<ng-template #groupContent>
 			<ng-container *ngFor="let s of groupSource">
 				<div class="group-name">{{s.group}}</div>
-				<div class="item" *ngFor="let item of s.items" (click)="select(item)">{{getItemDisplayField(item)}}
+				<div class="item" *ngFor="let i of s.items" (click)="select(i)">
+          <img draggable="false" *ngIf="imageField && i.image != null" class="image" [ngClass]="{'rounded': roundedImg}" src="{{getItemImageField(i)}}">
+          <span>{{getItemDisplayField(i)}}</span>
 				</div>
 			</ng-container>
 		</ng-template>

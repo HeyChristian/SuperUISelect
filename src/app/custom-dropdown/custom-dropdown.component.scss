@@ -15,6 +15,7 @@ $smooth-transition: 0.3s cubic-bezier(0,0,0.3,1);
   cursor: pointer;
   position: relative;
   padding-right: 25px;
+  text-align: left;
   svg.dropdown-icon{
     width: 20px;
     position: absolute;
@@ -91,8 +92,21 @@ $smooth-transition: 0.3s cubic-bezier(0,0,0.3,1);
     cursor: pointer;
     border-radius: 8px;
     transition: all $smooth-transition;
+    vertical-align: middle;
     &:hover{
       background: $itemHoverColor;
+    }
+    .image{
+      height: 30px;
+      width: 30px;
+      margin-right: 10px;
+      vertical-align: middle;
+      &.rounded{
+        border-radius: 30px;
+      }
+    }
+    span{
+      vertical-align: middle;
     }
   }
 
