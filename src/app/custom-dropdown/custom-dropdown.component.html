@@ -1,17 +1,47 @@
-<div class="dropdown-container">
-  <div class="dropdown-toggle" (click)="onDropdownClick()">{{ getFieldTitle() }}</div>
-  <div *ngIf="dropdown" class="dropdown">
-    <input placeholder="Filter..." class="dropdown-input" [(ngModel)]="filter" (ngModelChange)="onFilterChange()" *ngIf="!disableFilter"/>
-    <div *ngIf="!groupBy; else groupContent">
-       <ng-container *ngFor="let i of flatSource"> 
-        <div class="item" (click)="select(i)">{{getItemDisplayField(i)}}</div>
-      </ng-container>
-    </div>
-    <ng-template #groupContent>
-      <ng-container *ngFor="let s of groupSource"> 
-          {{s.group}}
-          <div class="item" *ngFor="let item of s.items" (click)="select(item)">{{getItemDisplayField(item)}}</div>
-      </ng-container>
-    </ng-template>
-  </div>
+<!-- dropdown input -->
+<div class="dropdown-toggle" [ngClass]="{'active' : dropdown}" (click)="onDropdownClick()">
+	{{ getFieldTitle() }}
+
+	<svg class="dropdown-icon" version="1.1" viewBox="0 0 100 100">
+		<path
+			d="m50.094 64.641l24.195-24.195-5.0859-5.0859-19.203 19.203-19.203-19.203-5.0859 5.0859 24.195 24.195 0.09375-0.09375z" />
+	</svg>
+
+</div>
+
+<!-- dropdown -->
+<div *ngIf="dropdown" class="dropdown">
+	<input placeholder="Filter..." class="dropdown-input" [(ngModel)]="filter" (ngModelChange)="onFilterChange()" *ngIf="!disableFilter"/>
+	<div class="items-container">
+
+		<div class="no-results" *ngIf="flatSource.length === 0 || groupBy != null && groupSource.length === 0">
+
+			<svg version="1.1" viewBox="0 0 100 100">
+				<path
+					d="m13 41.375c0 6.3828 2.1211 12.281 5.6914 17.027l39.707-39.711c-4.7461-3.5703-10.641-5.6914-17.023-5.6914-15.645 0-28.375 12.73-28.375 28.375zm-1.668 34.043c-0.5625 0-1.1211-0.12891-1.6445-0.36328-0.42578-0.19531-0.83203-0.45703-1.1836-0.80859-1.5625-1.5625-1.5625-4.0938 0-5.6562l4.4805-4.4844c-4.9922-6.2266-7.9844-14.129-7.9844-22.73 0-20.09 16.285-36.375 36.375-36.375 8.6016 0 16.504 2.9922 22.73 7.9883l4.4844-4.4844c1.5625-1.5625 4.0938-1.5625 5.6562 0 0.35156 0.35156 0.61328 0.75781 0.80859 1.1875 0.66406 1.4688 0.40234 3.2578-0.80859 4.4688l-60.086 60.086c-0.78125 0.78125-1.8047 1.1719-2.8281 1.1719zm82.492 12.75c1.5625 1.5625 1.5625 4.0938 0 5.6562-0.78125 0.78125-1.8047 1.1719-2.8281 1.1719-1.0234 0-2.0469-0.39062-2.8281-1.1719l-24.062-24.062c-6.2266 4.9961-14.129 7.9883-22.73 7.9883-4.4023 0-8.6172-0.78516-12.523-2.2227-2.6992-0.99219-3.4102-4.4922-1.375-6.5234l0.035157-0.039062c1.1172-1.1133 2.7695-1.4336 4.2539-0.89453 4.043 1.4609 8.5039 2.0312 13.16 1.4609 12.773-1.5703 23.035-11.832 24.605-24.605 0.57031-4.6523 0-9.1172-1.4648-13.16-0.53516-1.4844-0.21484-3.1367 0.89844-4.2539l0.035156-0.035157c2.0352-2.0352 5.5352-1.3242 6.5273 1.3789 1.4375 3.9023 2.2227 8.1172 2.2227 12.52 0 8.6016-2.9922 16.504-7.9883 22.73z"
+					fill-rule="evenodd" />
+			</svg>
+			<div>No Results Found</div>
+			<small>Please adjust your filter criteria</small>
+
+		</div>
+
+		<div *ngIf="!groupBy; else groupContent">
+			<ng-container *ngFor="let i of flatSource">
+				<div class="item" (click)="select(i)">
+          <img draggable="false" *ngIf="imageField && i.image != null" class="image" [ngClass]="{'rounded': roundedImg}" [src]="getItemImageField(i)">
+          <span>{{getItemDisplayField(i)}}</span>
+        </div>
+			</ng-container>
+		</div>
+		<ng-template #groupContent>
+			<ng-container *ngFor="let s of groupSource">
+				<div class="group-name">{{s.group}}</div>
+				<div class="item" *ngFor="let i of s.items" (click)="select(i)">
+          <img draggable="false" *ngIf="imageField && i.image != null" class="image" [ngClass]="{'rounded': roundedImg}" src="{{getItemImageField(i)}}">
+          <span>{{getItemDisplayField(i)}}</span>
+				</div>
+			</ng-container>
+		</ng-template>
+	</div>
 </div>

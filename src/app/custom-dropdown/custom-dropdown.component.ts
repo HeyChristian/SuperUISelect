@@ -4,7 +4,8 @@ import {
   Input,
   SimpleChanges,
   OnChanges,
-  forwardRef
+  forwardRef,
+  ElementRef
 } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
@@ -52,10 +53,22 @@ export class CustomDropdownComponent
   @Input() sortBy: string; // field for sorting the source
   @Input() minFilterLength: number = 1; // minimum characters for filter
 
-  filter = '';
-  constructor() { }
+  @Input() roundedImg: boolean = true; // image to display rounded
 
-  ngOnInit() { }
+  // COLOUR SCHEME
+  @Input() primaryColor: string = '#00507D'; // Primary Color
+  @Input() itemHoverColor: string = '#F8F8F8'; // Highlight Color
+  @Input() filterActiveColor: string = '#B3B3B3'; // Filter Active Color
+
+  filter = '';
+
+  constructor(private elementRef: ElementRef) { }
+
+  ngOnInit() {
+    this.elementRef.nativeElement.style.setProperty('--dropdown-primary-color', this.primaryColor);
+    this.elementRef.nativeElement.style.setProperty('--dropdown-item-hover-color', this.itemHoverColor);
+    this.elementRef.nativeElement.style.setProperty('--dropdown-filter-active-color', this.filterActiveColor);
+  }
 
   writeValue(value: any): void {
     this.value = value;
@@ -123,6 +136,9 @@ export class CustomDropdownComponent
   }
   getItemDisplayField(item) {
     return item[this.displayField];
+  }
+  getItemImageField(item) {
+    return item[this.imageField];
   }
 
   setGroupSource(results) {

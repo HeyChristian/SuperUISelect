@@ -1,12 +1,14 @@
-<custom-dropdown 
-[source]="items" 
-[placeholder]="'select order'"
-[displayField]="'name'" 
-[groupBy]="'make'"
-[sortBy]="'name'"
-[(ngModel)]="selection"
-[disableFilter]="false">
-</custom-dropdown>
-
-
-{{selection | json}}
+<table>
+	<tr>
+		<th>
+			<custom-dropdown [source]="items" [placeholder]="'Select A Repair Order'" [displayField]="'name'"
+				[groupBy]="'make'" [sortBy]="'name'" [(ngModel)]="selection" [disableFilter]="false">
+			</custom-dropdown>
+		</th>
+		<th>
+			<custom-dropdown [source]="contact" [placeholder]="'Select Contact'" [displayField]="'name'"
+				[imageField]="'image'" [sortBy]="'name'" [(ngModel)]="selection" [disableFilter]="true">
+			</custom-dropdown>
+		</th>
+	</tr>
+</table>
