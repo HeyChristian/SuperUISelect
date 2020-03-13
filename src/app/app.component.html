@@ -1,12 +1,9 @@
-<custom-dropdown 
-[source]="items" 
-[placeholder]="'select order'"
-[displayField]="'name'" 
-[groupBy]="'make'"
-[sortBy]="'name'"
-[(ngModel)]="selection"
-[disableFilter]="false">
-</custom-dropdown>
-
-
-{{selection | json}}
+<table>
+    <tr *ngFor="let x of [1,2,3]">
+        <th>
+            <custom-dropdown [source]="items" [placeholder]="'Select A Repair Order'" [displayField]="'name'"
+                [groupBy]="'make'" [sortBy]="'name'" [(ngModel)]="selection" [disableFilter]="false">
+            </custom-dropdown>
+        </th>
+    </tr>
+</table>
