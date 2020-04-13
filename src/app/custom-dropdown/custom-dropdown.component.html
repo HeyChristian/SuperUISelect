@@ -1,5 +1,5 @@
 <!-- dropdown input -->
-<div class="dropdown-toggle" [ngClass]="{'active' : dropdown}" (click)="onDropdownClick()">
+<div class="super-ui-select-toggle" [ngClass]="{'active' : dropdown}" (click)="onDropdownClick()">
 	{{ getFieldTitle() }}
 
 	<svg class="dropdown-icon" version="1.1" viewBox="0 0 100 100">
@@ -10,7 +10,7 @@
 </div>
 
 <!-- dropdown -->
-<div *ngIf="dropdown" class="dropdown">
+<div *ngIf="dropdown" class="super-ui-select">
 	<input placeholder="Filter..." class="dropdown-input" [(ngModel)]="filter" (ngModelChange)="onFilterChange()" *ngIf="!disableFilter"/>
 	<div class="items-container">
 

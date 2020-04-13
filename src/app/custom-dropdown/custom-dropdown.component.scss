@@ -4,7 +4,7 @@ $filterActiveColor: var(--dropdown-filter-active-color);
 
 $smooth-transition: 0.3s cubic-bezier(0,0,0.3,1);
 
-.dropdown-toggle{
+.super-ui-select-toggle{
   border: 1px solid #ddd;
   display: inline-block;
   padding: 8px;
@@ -24,7 +24,7 @@ $smooth-transition: 0.3s cubic-bezier(0,0,0.3,1);
     transform: translateY(-50%)
   }
 }
-.dropdown{
+.super-ui-select{
   width: 160px;
   padding: 6px;
   box-shadow: 0px 1px 6px #00000024;
