@@ -11,7 +11,7 @@
 
 <!-- dropdown -->
 <div *ngIf="dropdown" class="super-ui-select">
-	<input placeholder="Filter..." class="dropdown-input" [(ngModel)]="filter" (ngModelChange)="onFilterChange()" *ngIf="!_settings.disableFilter"/>
+	<input placeholder="Filter..." class="dropdown-input" [(ngModel)]="filter" (ngModelChange)="onFilterChange()" *ngIf="!_settings.disabledFilter"/>
 	<div class="items-container">
 
 		<div class="no-results" *ngIf="source.length === 0 || _settings.groupBy != null && groupSource.length === 0">
