@@ -24,8 +24,7 @@ import * as _ from "lodash";
   ]
 })
 
-export class CustomDropdownComponent
-  implements OnInit, OnChanges, ControlValueAccessor {
+export class CustomDropdownComponent implements OnInit, ControlValueAccessor {
   dropdown: boolean = false;
 
   private _value;
