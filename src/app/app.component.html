@@ -1,13 +1,11 @@
 <table>
 	<tr>
 		<th>
-			<custom-dropdown [source]="items" [placeholder]="'Select A Repair Order'" [displayField]="'name'"
-				[groupBy]="'make'" [sortBy]="'name'" [(ngModel)]="selection" [disableFilter]="false">
+			<custom-dropdown [source]="items" [(ngModel)]="selection1" [settings]="settings1">
 			</custom-dropdown>
 		</th>
 		<th>
-			<custom-dropdown [source]="contact" [placeholder]="'Select Contact'" [displayField]="'name'"
-				[imageField]="'image'" [sortBy]="'name'" [(ngModel)]="selection" [disableFilter]="true">
+			<custom-dropdown [source]="contact" [(ngModel)]="selection2" [settings]="settings2">
 			</custom-dropdown>
 		</th>
 	</tr>

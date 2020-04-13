@@ -23,6 +23,7 @@ import * as _ from "lodash";
     }
   ]
 })
+
 export class CustomDropdownComponent
   implements OnInit, OnChanges, ControlValueAccessor {
   dropdown: boolean = false;
@@ -41,33 +42,37 @@ export class CustomDropdownComponent
   onChange: any = () => { };
   onTouched: any = () => { };
 
-  private flatSource = [];
-  private groupSource = [];
 
-  @Input() source: any; //  source list
-  @Input() displayField: string; // field name to display
-  @Input() imageField: string; // field image to display
-  @Input() placeholder: string = 'Select One'; // drowndown placeholder
-  @Input() disableFilter: boolean = false; // flag for disable filter
-  @Input() groupBy: string; // field for grouping the source
-  @Input() sortBy: string; // field for sorting the source
-  @Input() minFilterLength: number = 1; // minimum characters for filter
+  groupSource = [];
 
-  @Input() roundedImg: boolean = true; // image to display rounded
+  @Input() source: any; 
+  
+  defaultSettings: UISelectSettings = { 
+    placeholder: 'Select One',
+    minFilterLength: -1,
+    primaryColor : '#00507D',
+    itemHoverColor : '#F8F8F8',
+    filterActiveColor: '#B3B3B3'
+  };
 
-  // COLOUR SCHEME
-  @Input() primaryColor: string = '#00507D'; // Primary Color
-  @Input() itemHoverColor: string = '#F8F8F8'; // Highlight Color
-  @Input() filterActiveColor: string = '#B3B3B3'; // Filter Active Color
-
+  public _settings: UISelectSettings; // = {...this.defaultSettings}
+  @Input() set settings(settings: UISelectSettings) {
+    this._settings = {...this.defaultSettings,... settings};
+    if (this._settings.sortBy) {
+      this.source = _.sortBy(this.source, this._settings.sortBy);
+    }
+    if (this._settings.groupBy) {
+        this.setGroupSource();
+    }
+  }
   filter = '';
 
   constructor(private elementRef: ElementRef) { }
 
   ngOnInit() {
-    this.elementRef.nativeElement.style.setProperty('--dropdown-primary-color', this.primaryColor);
-    this.elementRef.nativeElement.style.setProperty('--dropdown-item-hover-color', this.itemHoverColor);
-    this.elementRef.nativeElement.style.setProperty('--dropdown-filter-active-color', this.filterActiveColor);
+    this.elementRef.nativeElement.style.setProperty('--dropdown-primary-color', this._settings.primaryColor);
+    this.elementRef.nativeElement.style.setProperty('--dropdown-item-hover-color', this._settings.itemHoverColor);
+    this.elementRef.nativeElement.style.setProperty('--dropdown-filter-active-color', this._settings.filterActiveColor);
   }
 
   writeValue(value: any): void {
@@ -80,24 +85,10 @@ export class CustomDropdownComponent
     this.onTouched = fn;
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-
-    if (changes.sortBy) {
-      this.source = _.sortBy(this.source, this.sortBy);
-    }
-    if (changes.source) {
-      this.flatSource = this.source;
-    }
-    if (changes.groupBy && this.flatSource) {
-      this.setGroupSource(this.flatSource);
-    }
-  }
   onFilterChange() {
-    if (this.filter.length < this.minFilterLength) {
-      if (this.groupBy) {
+    if (this.filter.length < this._settings.minFilterLength) {
+      if (this._settings.groupBy) {
         this.setGroupSource(this.source);
-      } else {
-        this.flatSource = this.source;
       }
     } else {
       let items = this.source;
@@ -113,10 +104,8 @@ export class CustomDropdownComponent
           }
         }
       }
-      if (this.groupBy) {
+      if (this._settings.groupBy) {
         this.setGroupSource(results);
-      } else {
-        this.flatSource = results;
       }
     }
   }
@@ -128,22 +117,25 @@ export class CustomDropdownComponent
   getFieldTitle() {
     return this._value
       ? this.getItemDisplayField(this.value)
-      : this.placeholder;
+      : this._settings.placeholder;
   }
 
   onDropdownClick() {
     this.dropdown = !this.dropdown;
   }
   getItemDisplayField(item) {
-    return item[this.displayField];
+    return item[this._settings.displayField];
   }
   getItemImageField(item) {
-    return item[this.imageField];
+    return item[this._settings.imageField];
   }
 
-  setGroupSource(results) {
+  setGroupSource(results = null) {
+    if (!results) {
+      results = this.source;
+    }
     this.groupSource = [];
-    const groups = _.groupBy(results, this.groupBy);
+    const groups = _.groupBy(results, this._settings.groupBy);
     for (let key of Object.keys(groups)) {
       this.groupSource.push({
         group: key,
@@ -151,4 +143,19 @@ export class CustomDropdownComponent
       });
     }
   }
+}
+
+
+export interface UISelectSettings {
+   displayField?: string; // field name to display
+   imageField?: string; // field image to display
+   placeholder?: string; // drowndown placeholder
+   disabledFilter?: boolean; // flag for disable filter
+   groupBy?: string; // field for grouping the source
+   sortBy?: string; // field for sorting the source
+   minFilterLength?: number; // minimum characters for filter
+   roundedImg?: boolean; // image to display rounded
+   primaryColor?: string; // Primary Color
+   itemHoverColor?: string; // Highlight Color
+   filterActiveColor?: string; // Filter Active Color
 }

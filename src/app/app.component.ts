@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UISelectSettings } from './custom-dropdown/custom-dropdown.component';
 
 @Component({
   selector: 'my-app',
@@ -35,10 +36,23 @@ export class AppComponent  {
       image: 'https://lh3.googleusercontent.com/proxy/CRVX1EGfQFayef3XiqBK9HmQCSYk0K6ejIrMaNMOHyj6KD10FnHR9jiz3_uNxjv4l2tEQmvZbF_1cDX2IUH4T5h5MGVhAjWoX17tUMI8KpI-8MGO1z5fQO-8bnM'
     },
   ];
-  selection : any;
-  //  selection = {
-  //     name: '5678',
-  //     make: 'hyundai'
-  //   };
+  selection1: any;
+  selection2: any;
+
+
+
+  settings1: UISelectSettings = {
+    placeholder:'Select A Repair Order',
+    displayField:'name',
+		groupBy:'make',
+    sortBy:'name',
+    disabledFilter:false
+  }
+   settings2: UISelectSettings = {
+    displayField:'name',
+    sortBy:'name',
+    imageField: 'image',
+    disabledFilter:true
+  }
   
 }
