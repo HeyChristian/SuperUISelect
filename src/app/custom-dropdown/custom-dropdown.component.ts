@@ -54,7 +54,7 @@ export class CustomDropdownComponent implements OnInit, ControlValueAccessor {
     filterActiveColor: '#B3B3B3'
   };
 
-  public _settings: UISelectSettings; // = {...this.defaultSettings}
+  public _settings: UISelectSettings;
   @Input() set settings(settings: UISelectSettings) {
     this._settings = {...this.defaultSettings,... settings};
     if (this._settings.sortBy) {
